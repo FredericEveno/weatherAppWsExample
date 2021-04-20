@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+   <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <title>WeatherApp</title>
+</head>
+<body>
+
+
+    <!-- HEADER -->
+    <nav class=" header navbar navbar-light bg-dark">
+        Weather App
+       <a class="logout" href="/users/logout">Deconnexion</a>
+   </nav> 
+
+
+   <!-- GRID -->
+   <div class="container">
+      <div class="row">
+          <div class="col-12 offset-lg-6 col-lg-6">
+            <!--New City section-->
+            <form action="/add-city" method="POST">
+              <div class="input-group mb-3">
+                <input name="newcity" type="text" class="form-control" placeholder="enter city name" aria-label="new city name">
+                <div class="input-group-append">
+                  <button class="btn btn-warning" type="submit" id="button-addon2">Add</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-12 col-lg-6">
+            <!--Map section-->
+            <div id="worldmap"></div>
+          </div>
+          <div class="col-12 col-lg-6">
+            <!--City list section-->
+            <% if(cityList.length == 0){%>
+              <span class="empty">No cities found</span>
+            <%}%>
+            
+            <div class="d-flex justify-content-center">
+              <a class="update-cities" href="/update-cities">Update Cities <i class="fas fa-sync-alt"></i></a>
+            </div>
+
+            <ul class="list-group">
+              
+              <% for(let i=0; i<cityList.length;i++){%>
+                <li class="list-group-item d-flex justify-content-between align-items-center" data-lon="<%=cityList[i].coords_lon%>" data-lat="<%=cityList[i].coords_lat%>" data-name="<%=cityList[i].name%>">
+                  <%=cityList[i].name%>
+                  <div>
+                    <%=cityList[i].desc%>
+                    <img src="<%=cityList[i].img%>">
+                    <span class="badge badge-warning badge-pill"><%=cityList[i].temp_max%>°c</span>
+                    <span class="badge badge-secondary badge-pill"><%=cityList[i].temp_min%>°c</span>
+                  </div>
+                  <a href="/delete-city?id=<%=cityList[i]._id%>"><i class="deletepicto far fa-times-circle"></i></a>
+                </li>
+
+              <%}%>
+
+
+              
+            </ul>
+          </div>
+      </div>
+   </div>
+   
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="/map.js"></script>
+  </body>
+</html>
